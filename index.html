@@ -1,0 +1,62 @@
+<html>
+  
+  <head>
+    <title>Youtube Audio Downloader</title>
+    <link rel="stylesheet" href="index.css">
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <script type="text/javascript">
+      var reqid = 0;
+      function getSong(url, artist, album, id){
+        if(url=='') return;
+        $.post('/addSong', JSON.stringify({id, url, artist, album}), function(data, status){
+          const {fileName: filename, id: rowid} = JSON.parse(data);
+          $(`#row${rowid} td:last`).after(`<td id="result${rowid}">${filename}</td>`);
+          if(filename == "error occured"){
+            $(`#row${rowid} td:last`).after(`<td><button type="button" id="redo${rowid}">Try Again</button></td>`);
+            $(`#redo${rowid}`).click(function(){
+              let url = $(`#url${rowid}`).html();
+              let artist = $('#artistInput').val();
+              let album = $('#albumInput').val();
+              $(`#row${rowid}`).html(`<td id=url${rowid}>${url}</td>`);
+              getSong(url, arist, album, reqid);
+            });
+          }
+        });
+      }
+      jQuery(document).ready(function(){
+        $('#button').click(function(){
+          let url = $('#urlInput').val();
+          let artist = $('#artistInput').val();
+          let album = $('#albumInput').val();
+          $('#urlInput').val('');
+          if(url=='') return;
+          $('#table tr:last').after(`<tr id=row${reqid}><td id=url${reqid}>${url}</td></tr>`);
+          getSong(url, artist, album, reqid);
+          reqid++;
+        });
+      });
+    </script>
+  </head>
+
+  <body>
+    <div>
+      Enter song url
+      <input class="urlInput" id="urlInput" type="text" name="url" placeholder="https://song-url"></input>
+      <button id="button">Submit</button>
+      <br>
+      Overwrite Artist
+      <input class="artistInput" id="artistInput" type="text" name="artist" placeholder="artist"></input>
+      Overwrite Album
+      <input class="albumInput" id="albumInput" type="text" name="album" placeholder="album"></input>
+      <br><br><br><br>
+      <table id="table">
+        <tr>
+          <th>Url</th>
+          <th>Song</th>
+          <th>Action</th>
+        </tr>
+      </table>
+    </div>
+  </body>
+
+</html>

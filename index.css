@@ -1,0 +1,33 @@
+div {
+  text-align: center;
+  margin: 200px;
+}
+
+form {
+  margin: 20px;
+}
+
+.urlInput {
+  width: 50%;
+  height: 30px;
+}
+
+.artistInput, .artistInput {
+  width: 25%;
+  height: 30px;
+}
+
+button {
+  width: 80px;
+  height: 28px;
+}
+
+table {
+  border-collapse: collapse;
+  width: 100%;
+}
+
+table td, table th {
+  border: 1px solid #ddd;
+  padding: 8px;
+}
